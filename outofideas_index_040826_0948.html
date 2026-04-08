@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Out of Ideas LLC</title>
+<meta name="description" content="Out of Ideas LLC — Technology licensing. Out of Ideas LLC, inventor. Herndon, Virginia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0f1420;
+  --ink2:#3a4a6a;
+  --ink3:#8a9aba;
+  --rule:#dde3ee;
+  --rule2:#edf0f7;
+  --paper:#f8f9fc;
+  --accent:#1a3a8f;
+  --accent-l:#e8eef8;
+  --teal:#006d5b;
+  --display:'Bebas Neue',sans-serif;
+  --serif:'Lora',serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+
+html,body{height:100%;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--serif);
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* Decorative vertical rule — purely ornamental */
+body::before{
+  content:'';
+  position:fixed;
+  left:0;top:0;bottom:0;
+  width:3px;
+  background:linear-gradient(180deg,
+    transparent 0%,
+    var(--accent) 20%,
+    var(--teal) 60%,
+    transparent 100%
+  );
+  opacity:.18;
+  pointer-events:none;
+}
+
+/* Large decorative letter in background */
+.bg-letter{
+  position:fixed;
+  right:-40px;
+  top:50%;
+  transform:translateY(-50%);
+  font-family:var(--display);
+  font-size:480px;
+  color:var(--accent);
+  opacity:.025;
+  pointer-events:none;
+  line-height:1;
+  user-select:none;
+}
+
+header{
+  position:relative;z-index:1;
+  padding:40px 64px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+}
+.logo{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--accent);
+  letter-spacing:.1em;
+}
+.nav{display:flex;gap:32px;list-style:none;}
+.nav a{
+  font-family:var(--mono);font-size:11px;
+  color:var(--ink3);text-decoration:none;
+  letter-spacing:.06em;transition:color .2s;
+}
+.nav a:hover{color:var(--accent);}
+
+main{
+  position:relative;z-index:1;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:64px;
+  max-width:820px;
+}
+
+.eyebrow{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--teal);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  margin-bottom:22px;
+  display:flex;align-items:center;gap:12px;
+  animation:fadeUp .6s ease both;
+}
+.eyebrow::before{
+  content:'';
+  width:28px;height:1px;
+  background:var(--teal);
+  opacity:.7;
+}
+
+h1{
+  font-family:var(--display);
+  font-size:100px;
+  line-height:.9;
+  letter-spacing:.02em;
+  color:var(--ink);
+  margin-bottom:30px;
+  animation:fadeUp .6s .08s ease both;
+}
+h1 em{
+  color:var(--accent);
+  font-style:normal;
+  position:relative;
+}
+/* Subtle underline accent on the italic word */
+h1 em::after{
+  content:'';
+  position:absolute;
+  bottom:-4px;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--teal));
+  border-radius:2px;
+  opacity:.4;
+}
+
+.desc{
+  font-size:17px;
+  color:var(--ink2);
+  line-height:1.8;
+  max-width:520px;
+  margin-bottom:52px;
+  font-style:italic;
+  animation:fadeUp .6s .16s ease both;
+}
+
+/* Product card with a left-border accent */
+.product-link{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  text-decoration:none;
+  padding:22px 24px;
+  border:1px solid var(--rule);
+  border-left:3px solid var(--accent);
+  border-radius:0 3px 3px 0;
+  background:#fff;
+  margin-bottom:44px;
+  max-width:520px;
+  transition:border-color .25s,box-shadow .25s,transform .2s;
+  animation:fadeUp .6s .22s ease both;
+}
+.product-link:hover{
+  border-color:var(--accent);
+  border-left-color:var(--teal);
+  box-shadow:0 4px 24px rgba(26,58,143,.08);
+  transform:translateX(3px);
+}
+.product-name{
+  font-family:var(--display);
+  font-size:30px;
+  letter-spacing:.06em;
+  color:var(--ink);
+  margin-bottom:3px;
+}
+.product-tag{
+  font-family:var(--mono);
+  font-size:10px;
+  color:var(--ink3);
+  letter-spacing:.06em;
+}
+.arrow{
+  font-family:var(--mono);
+  font-size:18px;
+  color:var(--accent);
+  transition:transform .2s;
+}
+.product-link:hover .arrow{transform:translateX(5px);}
+
+.status-row{
+  display:flex;flex-wrap:wrap;gap:28px;
+  animation:fadeUp .6s .28s ease both;
+}
+.status-item{display:flex;flex-direction:column;gap:4px;}
+.status-label{
+  font-family:var(--mono);font-size:9px;
+  color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;
+}
+.status-val{
+  font-family:var(--mono);font-size:11px;color:var(--ink);
+}
+
+footer{
+  position:relative;z-index:1;
+  padding:28px 64px;
+  border-top:1px solid var(--rule);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.footer-contact{display:flex;flex-direction:column;gap:5px;}
+.footer-contact a{
+  font-family:var(--mono);font-size:11px;
+  color:var(--ink2);text-decoration:none;
+  letter-spacing:.04em;transition:color .2s;
+}
+.footer-contact a:hover{color:var(--accent);}
+.footer-mark{
+  font-family:var(--display);font-size:52px;
+  color:var(--rule2);letter-spacing:.06em;
+  user-select:none;
+}
+.footer-legal{
+  font-family:var(--mono);font-size:10px;
+  color:var(--ink3);letter-spacing:.04em;
+  text-align:right;line-height:1.75;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:640px){
+  .bg-letter{display:none;}
+  header{padding:28px 28px 0;flex-direction:column;gap:16px;}
+  main{padding:40px 28px;}
+  h1{font-size:68px;}
+  .product-link{max-width:100%;}
+  footer{padding:24px 28px;flex-direction:column;gap:20px;align-items:flex-start;}
+  .footer-mark{display:none;}
+  .footer-legal{text-align:left;}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-letter" aria-hidden="true">O</div>
+
+<header>
+  <div class="logo">OUT OF IDEAS LLC</div>
+  <ul class="nav">
+    <li><a href="tvstation.html">TVStation</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</header>
+
+<main>
+  <div class="eyebrow">Technology Licensing</div>
+  <h1>Out of <em>Ideas</em> LLC</h1>
+  <p class="desc">We develop and license patented broadcast delivery architecture. Our work enables global content synchronization without publisher-operated server infrastructure.</p>
+
+  <a href="tvstation.html" class="product-link">
+    <div>
+      <div class="product-name">TVStation</div>
+      <div class="product-tag">Flagship Product &nbsp;·&nbsp; Patent Pending</div>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+
+  <div class="status-row">
+    <div class="status-item">
+      <span class="status-label">Location</span>
+      <span class="status-val">Herndon, Virginia</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Entity</span>
+      <span class="status-val">Virginia LLC · Small Entity</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">SAM.gov</span>
+      <span class="status-val">Registered · NAICS 513210</span>
+    </div>
+  </div>
+</main>
+
+<footer id="contact">
+  <div class="footer-contact">
+    <a href="mailto:Demo@Outofideas.org">Demo@Outofideas.org</a>
+    <a href="tel:+15712431839">(571) 243-1839</a>
+    <a href="https://designoutofideas.github.io/TVStation/" target="_blank">Live Deployment →</a>
+  </div>
+  <div class="footer-mark">OOI</div>
+  <div class="footer-legal">
+    © 2026 Out of Ideas LLC<br>
+    TVStation · Patent Pending<br>
+    FAR 52.227-15 · Restricted Software
+  </div>
+</footer>
+
+</body>
+</html>

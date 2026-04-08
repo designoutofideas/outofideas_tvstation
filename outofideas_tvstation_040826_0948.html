@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TVStation · Out of Ideas LLC</title>
+<meta name="description" content="TVStation — UTC-synchronized broadcast delivery. Patent pending. Out of Ideas LLC.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital,wght@0,400;1,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#06080f;
+  --s1:#0a0d1a;
+  --bd:#1a2240;
+  --bd2:#242e50;
+  --teal:#00d4aa;
+  --teal-d:#00d4aa0e;
+  --teal-m:#00d4aa3a;
+  --text:#dce8ff;
+  --t2:#8aa0c8;
+  --t3:#3d5078;
+  --display:'Bebas Neue',sans-serif;
+  --serif:'Lora',serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+
+html,body{height:100%;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--serif);
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* Subtle dot grid */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:radial-gradient(#1e2e50 1px,transparent 1px);
+  background-size:32px 32px;
+  opacity:.15;
+  pointer-events:none;z-index:0;
+}
+
+/* Teal glow — top right, very soft */
+body::after{
+  content:'';
+  position:fixed;
+  top:-120px;right:-120px;
+  width:600px;height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle, #00d4aa 0%, transparent 70%);
+  opacity:.04;
+  pointer-events:none;z-index:0;
+}
+
+/* Animated horizontal scan line — purely decorative */
+.scan{
+  position:fixed;
+  left:0;right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--teal),transparent);
+  opacity:.06;
+  pointer-events:none;z-index:0;
+  animation:scan 10s ease-in-out infinite;
+}
+@keyframes scan{
+  0%{top:-2px;opacity:0}
+  10%{opacity:.06}
+  90%{opacity:.06}
+  100%{top:100%;opacity:0}
+}
+
+header{
+  position:relative;z-index:1;
+  padding:40px 64px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+}
+.logo{
+  font-family:var(--mono);font-size:12px;
+  color:var(--t2);letter-spacing:.1em;
+}
+.logo span{color:var(--teal);}
+.nav{display:flex;gap:32px;list-style:none;}
+.nav a{
+  font-family:var(--mono);font-size:11px;
+  color:var(--t3);text-decoration:none;
+  letter-spacing:.06em;transition:color .2s;
+}
+.nav a:hover{color:var(--teal);}
+
+main{
+  position:relative;z-index:1;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:64px;
+  max-width:860px;
+}
+
+.eyebrow{
+  font-family:var(--mono);font-size:11px;
+  color:var(--teal);letter-spacing:.14em;
+  text-transform:uppercase;margin-bottom:20px;
+  display:flex;align-items:center;gap:12px;
+  animation:fadeUp .65s ease both;
+}
+.eyebrow::before{
+  content:'';width:24px;height:1px;
+  background:var(--teal);
+}
+
+h1{
+  font-family:var(--display);
+  font-size:116px;
+  line-height:.88;
+  letter-spacing:.04em;
+  color:#fff;
+  margin-bottom:30px;
+  animation:fadeUp .65s .08s ease both;
+}
+
+/* Teal stroke under the title — like a broadcast signal line */
+.title-rule{
+  width:64px;height:2px;
+  background:linear-gradient(90deg,var(--teal),transparent);
+  margin-bottom:30px;
+  animation:fadeUp .65s .14s ease both;
+}
+
+.lede{
+  font-size:17px;
+  color:var(--t2);
+  line-height:1.8;
+  max-width:580px;
+  margin-bottom:50px;
+  animation:fadeUp .65s .18s ease both;
+}
+.lede em{color:var(--text);font-style:italic;}
+
+.points{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-bottom:52px;
+  max-width:580px;
+  animation:fadeUp .65s .24s ease both;
+}
+.point{
+  display:flex;gap:16px;align-items:baseline;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--bd);
+}
+.point:last-child{border-bottom:none;padding-bottom:0;}
+.point-marker{
+  font-family:var(--mono);font-size:10px;
+  color:var(--teal);flex-shrink:0;
+  opacity:.7;
+}
+.point-text{
+  font-size:15px;color:var(--t2);line-height:1.6;
+}
+
+.actions{
+  display:flex;gap:14px;flex-wrap:wrap;
+  animation:fadeUp .65s .3s ease both;
+}
+.btn{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.07em;padding:11px 24px;
+  text-decoration:none;border-radius:2px;
+  display:inline-block;transition:all .2s;
+}
+.btn-solid{
+  background:var(--teal);color:#001a12;
+}
+.btn-solid:hover{background:#00b893;transform:translateY(-1px);}
+.btn-border{
+  border:1px solid var(--bd2);color:var(--t2);
+}
+.btn-border:hover{border-color:var(--teal);color:var(--teal);}
+
+footer{
+  position:relative;z-index:1;
+  padding:28px 64px;
+  border-top:1px solid var(--bd);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.footer-contact{display:flex;gap:28px;}
+.footer-contact a{
+  font-family:var(--mono);font-size:11px;
+  color:var(--t3);text-decoration:none;
+  letter-spacing:.04em;transition:color .2s;
+}
+.footer-contact a:hover{color:var(--teal);}
+.footer-legal{
+  font-family:var(--mono);font-size:10px;
+  color:var(--t3);letter-spacing:.04em;
+  text-align:right;line-height:1.75;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:640px){
+  header{padding:28px 28px 0;flex-direction:column;gap:16px;}
+  main{padding:40px 28px;}
+  h1{font-size:76px;}
+  footer{padding:24px 28px;flex-direction:column;gap:16px;align-items:flex-start;}
+  .footer-contact{flex-direction:column;gap:10px;}
+  .footer-legal{text-align:left;}
+}
+</style>
+</head>
+<body>
+
+<div class="scan" aria-hidden="true"></div>
+
+<header>
+  <div class="logo">OUT OF IDEAS LLC &nbsp;·&nbsp; <span>TVSTATION</span></div>
+  <ul class="nav">
+    <li><a href="/">← outofideas.org</a></li>
+    <li><a href="mailto:Demo@Outofideas.org">Contact</a></li>
+  </ul>
+</header>
+
+<main>
+  <div class="eyebrow">Patent Pending</div>
+  <h1>TVStation</h1>
+  <div class="title-rule"></div>
+
+  <p class="lede">A broadcast delivery system in which <em>every client independently resolves the current broadcast position from UTC time alone</em> — without any publisher-operated server in the synchronization data path.</p>
+
+  <div class="points">
+    <div class="point">
+      <span class="point-marker">—</span>
+      <span class="point-text">The publisher's infrastructure can go offline after schedule delivery. The broadcast continues.</span>
+    </div>
+    <div class="point">
+      <span class="point-marker">—</span>
+      <span class="point-text">Each additional concurrent viewer adds zero load to any publisher-controlled component.</span>
+    </div>
+    <div class="point">
+      <span class="point-marker">—</span>
+      <span class="point-text">Operates over internet, Wi-Fi mesh, LoRa radio, physical media, and shortwave — without modification.</span>
+    </div>
+    <div class="point">
+      <span class="point-marker">—</span>
+      <span class="point-text">Rotating delivery endpoints create a structural asymmetry that favors the broadcaster over network blocking authorities.</span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <a href="https://designoutofideas.github.io/TVStation/" target="_blank" class="btn btn-solid">Live Deployment →</a>
+    <a href="mailto:Demo@Outofideas.org" class="btn btn-border">Licensing Inquiries</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-contact">
+    <a href="mailto:Demo@Outofideas.org">Demo@Outofideas.org</a>
+    <a href="tel:+15712431839">(571) 243-1839</a>
+    <a href="/">outofideas.org</a>
+  </div>
+  <div class="footer-legal">
+    © 2026 Out of Ideas LLC · Patent Pending<br>
+    FAR 52.227-15 · Restricted Software
+  </div>
+</footer>
+
+</body>
+</html>
