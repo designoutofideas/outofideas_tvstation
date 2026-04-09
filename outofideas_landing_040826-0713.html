@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Out of Ideas LLC</title>
+<meta name="description" content="Out of Ideas LLC — Technology licensing. Herndon, Virginia. Patent pending.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital,wght@0,400;1,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0f1420;
+  --ink2:#3a4a6a;
+  --ink3:#8a9aba;
+  --rule:#dde3ee;
+  --rule2:#edf0f7;
+  --paper:#f8f9fc;
+  --accent:#1a3a8f;
+  --teal:#006d5b;
+  --teal-l:#e6f4f1;
+  --display:'Bebas Neue',sans-serif;
+  --serif:'Lora',serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+
+html,body{height:100%;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--serif);
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+body::before{
+  content:'';
+  position:fixed;
+  left:0;top:0;bottom:0;
+  width:3px;
+  background:linear-gradient(180deg,
+    transparent 0%,
+    var(--accent) 20%,
+    var(--teal) 60%,
+    transparent 100%
+  );
+  opacity:.18;
+  pointer-events:none;
+}
+
+.bg-letter{
+  position:fixed;
+  right:-40px;top:50%;
+  transform:translateY(-50%);
+  font-family:var(--display);
+  font-size:480px;
+  color:var(--accent);
+  opacity:.025;
+  pointer-events:none;
+  line-height:1;
+  user-select:none;
+}
+
+/* ── HEADER ── */
+header{
+  position:relative;z-index:1;
+  padding:40px 64px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+}
+.logo{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--accent);
+  letter-spacing:.1em;
+}
+.header-right{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--ink3);
+  letter-spacing:.08em;
+}
+
+/* ── MAIN ── */
+main{
+  position:relative;z-index:1;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:64px;
+  max-width:900px;
+}
+
+.eyebrow{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--teal);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  margin-bottom:22px;
+  display:flex;align-items:center;gap:12px;
+  animation:fadeUp .6s ease both;
+}
+.eyebrow::before{
+  content:'';width:28px;height:1px;
+  background:var(--teal);opacity:.7;
+}
+
+h1{
+  font-family:var(--display);
+  font-size:96px;
+  line-height:.9;
+  letter-spacing:.02em;
+  color:var(--ink);
+  margin-bottom:24px;
+  animation:fadeUp .6s .08s ease both;
+}
+h1 em{
+  color:var(--accent);
+  font-style:normal;
+  position:relative;
+}
+h1 em::after{
+  content:'';
+  position:absolute;
+  bottom:-4px;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--teal));
+  border-radius:2px;
+  opacity:.4;
+}
+
+.tagline{
+  font-size:17px;
+  color:var(--ink2);
+  line-height:1.75;
+  max-width:460px;
+  font-style:italic;
+  margin-bottom:52px;
+  animation:fadeUp .6s .14s ease both;
+}
+
+/* ── DESTINATION CARDS ── */
+.cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  max-width:680px;
+  margin-bottom:52px;
+  animation:fadeUp .6s .2s ease both;
+}
+
+.card{
+  display:block;
+  text-decoration:none;
+  padding:24px 26px;
+  border-radius:3px;
+  position:relative;
+  overflow:hidden;
+  transition:transform .2s, box-shadow .2s;
+}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.06);}
+
+.card.light{
+  background:#fff;
+  border:1px solid var(--rule);
+  border-left:3px solid var(--accent);
+}
+.card.dark{
+  background:var(--ink);
+  border:1px solid var(--ink);
+  border-left:3px solid var(--teal);
+}
+
+.card-eyebrow{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.card.light .card-eyebrow{color:var(--ink3);}
+.card.dark .card-eyebrow{color:#2a7060;}
+
+.card-title{
+  font-family:var(--display);
+  font-size:32px;
+  letter-spacing:.04em;
+  line-height:1;
+  margin-bottom:10px;
+}
+.card.light .card-title{color:var(--ink);}
+.card.dark .card-title{color:#fff;}
+
+.card-desc{
+  font-size:13px;
+  line-height:1.6;
+  margin-bottom:16px;
+}
+.card.light .card-desc{color:var(--ink2);}
+.card.dark .card-desc{color:#8aa0c8;}
+
+.card-cta{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.08em;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  transition:gap .2s;
+}
+.card.light .card-cta{color:var(--accent);}
+.card.dark .card-cta{color:#00d4aa;}
+.card:hover .card-cta{gap:10px;}
+
+/* ── STATUS ROW ── */
+.status-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:24px;
+  animation:fadeUp .6s .26s ease both;
+}
+.status-item{display:flex;flex-direction:column;gap:3px;}
+.status-label{
+  font-family:var(--mono);font-size:9px;
+  color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;
+}
+.status-val{
+  font-family:var(--mono);font-size:11px;color:var(--ink);
+}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:1;
+  padding:28px 64px;
+  border-top:1px solid var(--rule);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.footer-contact{
+  display:flex;gap:24px;
+}
+.footer-contact a{
+  font-family:var(--mono);font-size:11px;
+  color:var(--ink2);text-decoration:none;
+  letter-spacing:.04em;transition:color .2s;
+}
+.footer-contact a:hover{color:var(--accent);}
+.footer-mark{
+  font-family:var(--display);font-size:52px;
+  color:var(--rule);letter-spacing:.06em;
+  user-select:none;
+}
+.footer-legal{
+  font-family:var(--mono);font-size:10px;
+  color:var(--ink3);letter-spacing:.04em;
+  line-height:1.8;text-align:right;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:640px){
+  .bg-letter{display:none;}
+  header{padding:28px 28px 0;}
+  main{padding:40px 28px;}
+  h1{font-size:68px;}
+  .cards{grid-template-columns:1fr;}
+  footer{
+    padding:24px 28px;
+    flex-direction:column;gap:16px;align-items:flex-start;
+  }
+  .footer-contact{flex-direction:column;gap:10px;}
+  .footer-mark{display:none;}
+  .footer-legal{text-align:left;}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-letter" aria-hidden="true">O</div>
+
+<header>
+  <div class="logo">OUT OF IDEAS LLC</div>
+  <div class="header-right">Herndon, Virginia · Patent Pending</div>
+</header>
+
+<main>
+  <div class="eyebrow">Technology Licensing</div>
+  <h1>Out of <em>Ideas</em> LLC</h1>
+  <p class="tagline">We develop and license patented broadcast delivery architecture for publishers, broadcasters, and government entities.</p>
+
+  <div class="cards">
+
+    <a href="index.html" class="card light">
+      <div class="card-eyebrow">Company</div>
+      <div class="card-title">Out of Ideas LLC</div>
+      <div class="card-desc">About the company, IP portfolio, SAM.gov registration, and licensing inquiries.</div>
+      <div class="card-cta">About us →</div>
+    </a>
+
+    <a href="tvstation.html" class="card dark">
+      <div class="card-eyebrow">Flagship Product</div>
+      <div class="card-title">TVStation</div>
+      <div class="card-desc">A novel broadcast delivery platform. Patent pending.</div>
+      <div class="card-cta">Learn more →</div>
+    </a>
+
+  </div>
+
+  <div class="status-row">
+    <div class="status-item">
+      <span class="status-label">Entity</span>
+      <span class="status-val">Virginia LLC · Small Entity</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">SAM.gov</span>
+      <span class="status-val">Registered · NAICS 513210</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Patent Status</span>
+      <span class="status-val">Patent Pending</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Live Demo</span>
+      <span class="status-val"><a href="https://designoutofideas.github.io/TVStation/" target="_blank" style="color:var(--teal);font-family:var(--mono);font-size:11px;text-decoration:none;">TVStation →</a></span>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-contact">
+    <a href="mailto:Demo@Outofideas.org">Demo@Outofideas.org</a>
+  </div>
+  <div class="footer-mark">OOI</div>
+  <div class="footer-legal">
+    © 2026 Out of Ideas LLC<br>
+    TVStation · Patent Pending<br>
+    FAR 52.227-15
+  </div>
+</footer>
+
+</body>
+</html>
