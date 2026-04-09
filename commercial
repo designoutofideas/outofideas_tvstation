@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="TVStation — Synchronized broadcast infrastructure. Patent pending. Zero load per viewer. Unlimited concurrent viewers.">
+<title>TVStation — Synchronized Broadcast Infrastructure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Bebas+Neue&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --green:#61C230;--green-dim:#3a7a1a;--bg:#0a0a0a;--bg2:#111111;--bg3:#1a1a1a;
+  --border:#2a2a2a;--text:#e8e8e8;--muted:#666;
+  --mono:'IBM Plex Mono',monospace;--display:'Bebas Neue',sans-serif;--body:'IBM Plex Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);overflow-x:hidden}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(10,10,10,0.96);backdrop-filter:blur(8px);z-index:100}
+.nav-logo{font-family:var(--display);font-size:26px;letter-spacing:2px;color:var(--green)}
+.nav-tag{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px;margin-top:2px}
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-links{display:flex;gap:20px}
+.nav-link{font-family:var(--mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s}
+.nav-link:hover{color:var(--green)}
+.lang-switch{display:flex;gap:6px}
+.lang-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:10px;padding:4px 10px;cursor:pointer;letter-spacing:1px;transition:all .2s}
+.lang-btn:hover,.lang-btn.active{border-color:var(--green);color:var(--green)}
+
+/* HERO */
+.hero{padding:80px 40px 60px;border-bottom:1px solid var(--border)}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;max-width:1100px;margin:0 auto}
+.hero-eyebrow{font-family:var(--mono);font-size:11px;color:var(--green);letter-spacing:3px;margin-bottom:16px}
+.hero-title{font-family:var(--display);font-size:72px;line-height:0.95;letter-spacing:2px;margin-bottom:24px}
+.hero-title span{color:var(--green)}
+.hero-sub{font-size:15px;line-height:1.7;color:#aaa;max-width:480px;font-weight:300}
+.hero-stat-row{display:flex;gap:32px;margin-top:40px;padding-top:32px;border-top:1px solid var(--border)}
+.hero-stat{display:flex;flex-direction:column;gap:4px}
+.hero-stat-val{font-family:var(--display);font-size:36px;color:var(--green);letter-spacing:1px}
+.hero-stat-label{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:2px}
+.utc-display{background:var(--bg2);border:1px solid var(--border);padding:24px;font-family:var(--mono)}
+.utc-label{font-size:9px;color:var(--muted);letter-spacing:3px;margin-bottom:8px}
+.utc-time{font-size:42px;color:var(--green);letter-spacing:4px;font-weight:600}
+.utc-sub{font-size:10px;color:var(--muted);margin-top:6px;letter-spacing:1px}
+.utc-pulse{display:inline-block;width:6px;height:6px;background:var(--green);border-radius:50%;margin-right:8px;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.tag{background:var(--bg3);border:1px solid var(--border);padding:4px 10px;font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px}
+
+/* SECTIONS */
+.section-wrap{padding:60px 40px;border-bottom:1px solid var(--border);max-width:1180px;margin:0 auto}
+.section-label{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:3px;margin-bottom:32px}
+
+/* PROFILES */
+.profile-tabs{display:flex;border:1px solid var(--border);width:fit-content;margin-bottom:40px;overflow:hidden}
+.profile-tab{padding:12px 22px;font-family:var(--mono);font-size:11px;letter-spacing:1px;cursor:pointer;background:none;color:var(--muted);transition:all .2s;border:none;border-right:1px solid var(--border)}
+.profile-tab:last-child{border-right:none}
+.profile-tab.active{background:var(--green);color:#000;font-weight:600}
+.profile-tab:hover:not(.active){color:var(--text);background:var(--bg3)}
+.profile-content{display:none;animation:fadeIn .3s ease}
+.profile-content.active{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.profile-headline{font-family:var(--display);font-size:48px;letter-spacing:1px;line-height:1;margin-bottom:16px}
+.profile-headline span{color:var(--green)}
+.profile-body{font-size:14px;line-height:1.8;color:#aaa;font-weight:300;margin-bottom:24px}
+.offering-list{display:flex;flex-direction:column;gap:10px}
+.offering-item{display:flex;align-items:flex-start;gap:12px;font-size:13px;color:#ccc;font-family:var(--mono)}
+.offering-item::before{content:'→';color:var(--green);flex-shrink:0}
+.profile-metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.profile-metric{background:var(--bg2);border:1px solid var(--border);padding:20px}
+.metric-val{font-family:var(--display);font-size:40px;color:var(--green)}
+.metric-label{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:2px;margin-top:4px}
+
+/* EXPLORER */
+.arch-container{display:grid;grid-template-columns:210px 1fr;border:1px solid var(--border)}
+.arch-nav{border-right:1px solid var(--border)}
+.arch-nav-item{padding:14px 20px;font-family:var(--mono);font-size:11px;color:var(--muted);cursor:pointer;border-bottom:1px solid var(--border);transition:all .2s;letter-spacing:1px;border-left:2px solid transparent}
+.arch-nav-item:last-child{border-bottom:none}
+.arch-nav-item:hover{color:var(--text);background:var(--bg2)}
+.arch-nav-item.active{color:var(--green);background:var(--bg2);border-left-color:var(--green)}
+.arch-panel{padding:32px;min-height:340px;display:none}
+.arch-panel.active{display:block;animation:fadeIn .25s ease}
+.arch-panel-title{font-family:var(--display);font-size:38px;letter-spacing:1px;margin-bottom:4px}
+.arch-panel-sub{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:2px;margin-bottom:24px}
+.arch-flow{display:flex;align-items:center;flex-wrap:wrap;gap:0;margin-bottom:24px}
+.arch-node{background:var(--bg3);border:1px solid var(--border);padding:9px 14px;font-family:var(--mono);font-size:11px;color:var(--text);white-space:nowrap}
+.arch-node.hi{border-color:var(--green);color:var(--green)}
+.arch-node.sec{border-color:#534AB7;color:#AFA9EC}
+.arch-arrow{color:var(--muted);padding:0 8px;font-size:14px}
+.arch-desc{font-size:13px;line-height:1.8;color:#aaa;font-weight:300;margin-bottom:20px}
+.arch-detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.arch-detail{background:var(--bg2);border:1px solid var(--border);padding:16px}
+.arch-detail-label{font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:2px;margin-bottom:6px}
+.arch-detail-val{font-size:12px;color:#ccc;line-height:1.6}
+
+/* DEMO */
+.demo-wrap{background:var(--bg2);border:1px solid var(--border);padding:32px}
+.demo-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.demo-title-mono{font-family:var(--mono);font-size:11px;color:var(--green);letter-spacing:3px}
+.demo-status{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--muted)}
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.demo-col-label{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:2px;margin-bottom:12px}
+.demo-block-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.demo-block{background:var(--bg3);border:1px solid var(--border);padding:10px 8px;text-align:center;transition:all .2s}
+.demo-block.active-block{border-color:var(--green);background:rgba(97,194,48,0.08)}
+.demo-block-name{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px}
+.demo-block.active-block .demo-block-name{color:var(--green)}
+.demo-block-time{font-family:var(--mono);font-size:8px;color:#444;margin-top:3px}
+.demo-url-box{background:var(--bg);border:1px solid var(--border);padding:12px 16px;margin-top:16px}
+.demo-url-label{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:2px;margin-bottom:6px}
+.demo-url-val{font-family:var(--mono);font-size:11px;color:var(--green);word-break:break-all;line-height:1.6}
+.demo-compute{background:var(--bg);border:1px solid var(--border);padding:16px}
+.demo-compute-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px}
+.demo-compute-row:last-child{border:none}
+.demo-compute-key{color:var(--muted)}
+.demo-compute-val{color:var(--text)}
+.demo-compute-val.green{color:var(--green)}
+
+/* CTA */
+.cta{padding:80px 40px;text-align:center;border-bottom:1px solid var(--border)}
+.cta-title{font-family:var(--display);font-size:64px;letter-spacing:2px;margin-bottom:16px}
+.cta-title span{color:var(--green)}
+.cta-sub{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:2px;margin-bottom:36px}
+.cta-btn{display:inline-block;background:var(--green);color:#000;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:2px;padding:16px 40px;cursor:pointer;border:none;transition:all .2s;text-decoration:none}
+.cta-btn:hover{background:#7de842}
+.contact-info{margin-top:28px;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:2.4}
+
+/* FOOTER */
+.footer{padding:24px 40px;display:flex;justify-content:space-between;align-items:center}
+.footer-mono{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero-grid,.profile-content.active,.demo-grid,.arch-container,.arch-detail-grid{grid-template-columns:1fr}
+  .hero-title{font-size:52px}
+  .nav{padding:14px 20px}
+  .section-wrap,.hero,.cta{padding-left:20px;padding-right:20px}
+  .profile-tabs{flex-wrap:wrap}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div>
+    <div class="nav-logo">TVSTATION</div>
+    <div class="nav-tag">SYNCHRONIZED BROADCAST INFRASTRUCTURE · PATENT PENDING</div>
+  </div>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a class="nav-link" href="#profiles">LICENSING</a>
+      <a class="nav-link" href="#explorer">HOW IT WORKS</a>
+      <a class="nav-link" href="#demo">DEMO</a>
+      <a class="nav-link" href="#contact">CONTACT</a>
+    </div>
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="setLang('en',this)">EN</button>
+      <button class="lang-btn" onclick="setLang('es',this)">ES</button>
+      <button class="lang-btn" onclick="setLang('zh',this)">中文</button>
+      <button class="lang-btn" onclick="setLang('ja',this)">日本語</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-eyebrow" id="h-eyebrow">PROPRIETARY BROADCAST TECHNOLOGY</div>
+      <h1 class="hero-title" id="h-title">ZERO<br>LOAD.<br><span>INFINITE</span><br>SCALE.</h1>
+      <p class="hero-sub" id="h-sub">A broadcast delivery system where publisher infrastructure load does not increase with audience size. Every viewer receives the same content at the same moment — without server-side coordination, without scaling costs, without limits.</p>
+      <div class="hero-stat-row">
+        <div class="hero-stat">
+          <span class="hero-stat-val">0</span>
+          <span class="hero-stat-label" id="h-s1">ADDED LOAD PER VIEWER</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-val">∞</span>
+          <span class="hero-stat-label" id="h-s2">CONCURRENT VIEWERS</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-val">1</span>
+          <span class="hero-stat-label" id="h-s3">GLOBAL TIME SOURCE</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="utc-display">
+        <div class="utc-label">COORDINATED UNIVERSAL TIME — LIVE</div>
+        <div class="utc-time" id="utc-clock">00:00:00</div>
+        <div class="utc-sub"><span class="utc-pulse"></span><span id="h-sync">ALL CONNECTED VIEWERS SYNCHRONIZED</span></div>
+      </div>
+      <div class="tag-row">
+        <span class="tag">PATENT PENDING</span>
+        <span class="tag">US UTILITY APPLICATION</span>
+        <span class="tag">SMALL ENTITY</span>
+        <span class="tag">OUT OF IDEAS LLC</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUYER PROFILES -->
+<section id="profiles" style="padding:60px 0;border-bottom:1px solid var(--border)">
+  <div class="section-wrap" style="padding-top:0;padding-bottom:0;border:none">
+    <div class="section-label" id="p-label">— COMMERCIAL LICENSING</div>
+    <div class="profile-tabs">
+      <button class="profile-tab active" onclick="setProfile('streaming',this)">STREAMING PLATFORMS</button>
+      <button class="profile-tab" onclick="setProfile('studio',this)">STUDIOS</button>
+      <button class="profile-tab" onclick="setProfile('cloud',this)">CLOUD PROVIDERS</button>
+      <button class="profile-tab" onclick="setProfile('broadcast',this)">BROADCASTERS</button>
+    </div>
+
+    <div class="profile-content active" id="profile-streaming">
+      <div>
+        <div class="profile-headline">ELIMINATE<br>SCALING<br><span>COSTS.</span></div>
+        <p class="profile-body">License a delivery architecture where infrastructure cost is decoupled from audience size. Whether your platform serves ten thousand or ten million concurrent viewers, the publisher-side load profile does not change.</p>
+        <div class="offering-list">
+          <div class="offering-item">Technology license — core synchronized delivery method</div>
+          <div class="offering-item">API integration — embed delivery in your existing platform</div>
+          <div class="offering-item">White-label — full streaming and social platform</div>
+          <div class="offering-item">Synchronized premiere — all viewers start at the same moment</div>
+        </div>
+      </div>
+      <div class="profile-metric-grid">
+        <div class="profile-metric"><div class="metric-val">0</div><div class="metric-label">ADDED INFRA COST PER VIEWER</div></div>
+        <div class="profile-metric"><div class="metric-val">1×</div><div class="metric-label">ORIGIN LOAD AT ANY AUDIENCE SIZE</div></div>
+        <div class="profile-metric"><div class="metric-val">100%</div><div class="metric-label">FRAME-ACCURATE SYNCHRONIZATION</div></div>
+        <div class="profile-metric"><div class="metric-val">≤1s</div><div class="metric-label">LIVE OVERRIDE GLOBAL PROPAGATION</div></div>
+      </div>
+    </div>
+
+    <div class="profile-content" id="profile-studio">
+      <div>
+        <div class="profile-headline">PROTECT<br>EVERY<br><span>FRAME.</span></div>
+        <p class="profile-body">Every segment of every piece of content carries a cryptographic signature from your master key. No content can reach a viewer without passing independent verification at the delivery layer. Rotating access paths defeat harvesting and pattern-based blocking.</p>
+        <div class="offering-list">
+          <div class="offering-item">Cryptographic signing — every content segment</div>
+          <div class="offering-item">Independent integrity verification at delivery</div>
+          <div class="offering-item">Rotating access paths — defeats URL harvesting</div>
+          <div class="offering-item">Tiered access — free, subscription, pay-per-view</div>
+        </div>
+      </div>
+      <div class="profile-metric-grid">
+        <div class="profile-metric"><div class="metric-val">2</div><div class="metric-label">INDEPENDENT VERIFICATION LAYERS</div></div>
+        <div class="profile-metric"><div class="metric-val">100%</div><div class="metric-label">CONTENT CHAIN OF CUSTODY</div></div>
+        <div class="profile-metric"><div class="metric-val">0</div><div class="metric-label">UNVERIFIED SEGMENTS SERVED</div></div>
+        <div class="profile-metric"><div class="metric-val">∞</div><div class="metric-label">ROTATION FREQUENCY OPTIONS</div></div>
+      </div>
+    </div>
+
+    <div class="profile-content" id="profile-cloud">
+      <div>
+        <div class="profile-headline">OWN THE<br>DELIVERY<br><span>STACK.</span></div>
+        <p class="profile-body">The synchronized broadcast method is a foundational delivery primitive. License it to offer zero-marginal-load broadcast as a managed cloud service. Or deploy a fully proprietary edge network — publisher-controlled co-location, no third-party CDN dependency.</p>
+        <div class="offering-list">
+          <div class="offering-item">Technology license — synchronized delivery method</div>
+          <div class="offering-item">Proprietary edge network — publisher-controlled infrastructure</div>
+          <div class="offering-item">Schedule coordination architecture — full design</div>
+          <div class="offering-item">White-label full platform deployment</div>
+        </div>
+      </div>
+      <div class="profile-metric-grid">
+        <div class="profile-metric"><div class="metric-val">6</div><div class="metric-label">GLOBAL EDGE REGIONS</div></div>
+        <div class="profile-metric"><div class="metric-val">0</div><div class="metric-label">THIRD-PARTY CDN DEPENDENCY</div></div>
+        <div class="profile-metric"><div class="metric-val">100%</div><div class="metric-label">PUBLISHER INFRASTRUCTURE CONTROL</div></div>
+        <div class="profile-metric"><div class="metric-val">1</div><div class="metric-label">WRITE TO UPDATE ALL REGIONS</div></div>
+      </div>
+    </div>
+
+    <div class="profile-content" id="profile-broadcast">
+      <div>
+        <div class="profile-headline">REACH<br>WHERE<br><span>BLOCKED.</span></div>
+        <p class="profile-body">Designed for operation in press-restricted environments. Rotating access paths produce no stable URL pattern for blocking systems to match. Browser-native delivery requires no app store. Encrypted transport hides destination from network inspection.</p>
+        <div class="offering-list">
+          <div class="offering-item">Rotating access paths — no stable pattern to block</div>
+          <div class="offering-item">Browser-native delivery — no app store required</div>
+          <div class="offering-item">Encrypted transport — destination hidden from inspection</div>
+          <div class="offering-item">Instant live override — one action reaches all viewers</div>
+        </div>
+      </div>
+      <div class="profile-metric-grid">
+        <div class="profile-metric"><div class="metric-val">0</div><div class="metric-label">STABLE PATTERNS TO BLOCK</div></div>
+        <div class="profile-metric"><div class="metric-val">PWA</div><div class="metric-label">NO APP STORE REQUIRED</div></div>
+        <div class="profile-metric"><div class="metric-val">≤1s</div><div class="metric-label">OVERRIDE REACHES ALL VIEWERS</div></div>
+        <div class="profile-metric"><div class="metric-val">100%</div><div class="metric-label">ENCRYPTED TRANSPORT</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE EXPLORER -->
+<section id="explorer" style="padding:60px 0;border-bottom:1px solid var(--border)">
+  <div class="section-wrap" style="padding-top:0;padding-bottom:0;border:none">
+    <div class="section-label">— INTERACTIVE SYSTEM OVERVIEW</div>
+    <div style="font-family:var(--display);font-size:52px;letter-spacing:2px;margin-bottom:8px" id="ex-title">HOW IT WORKS</div>
+    <div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:40px;letter-spacing:1px" id="ex-sub">SELECT A CAPABILITY TO EXPLORE</div>
+    <div class="arch-container">
+      <div class="arch-nav">
+        <div class="arch-nav-item active" onclick="setArch('sync',this)">SYNCHRONIZATION</div>
+        <div class="arch-nav-item" onclick="setArch('schedule',this)">SCHEDULING</div>
+        <div class="arch-nav-item" onclick="setArch('access',this)">ACCESS CONTROL</div>
+        <div class="arch-nav-item" onclick="setArch('delivery',this)">DELIVERY</div>
+        <div class="arch-nav-item" onclick="setArch('protection',this)">CONTENT PROTECTION</div>
+        <div class="arch-nav-item" onclick="setArch('override',this)">LIVE OVERRIDE</div>
+        <div class="arch-nav-item" onclick="setArch('scale',this)">SCALE</div>
+      </div>
+      <div>
+        <div class="arch-panel active" id="arch-sync">
+          <div class="arch-panel-title">SYNCHRONIZATION</div>
+          <div class="arch-panel-sub">EVERY VIEWER · SAME FRAME · SAME MOMENT</div>
+          <div class="arch-flow">
+            <div class="arch-node hi">GLOBAL TIME</div><div class="arch-arrow">→</div>
+            <div class="arch-node">CLIENT COMPUTES</div><div class="arch-arrow">→</div>
+            <div class="arch-node hi">ACTIVE CONTENT</div><div class="arch-arrow">→</div>
+            <div class="arch-node hi">SYNCHRONIZED VIEWER</div>
+          </div>
+          <p class="arch-desc">Every viewer independently determines what should be playing at the current moment using a shared global time reference. No central server coordinates playback. No messages are exchanged between viewers. The result is frame-accurate synchronization across an unlimited number of concurrent viewers — structurally independent of audience size.</p>
+          <div class="arch-detail-grid">
+            <div class="arch-detail"><div class="arch-detail-label">HOW</div><div class="arch-detail-val">Each client independently computes the active content reference from the current time. No round-trip required.</div></div>
+            <div class="arch-detail"><div class="arch-detail-label">RESULT</div><div class="arch-detail-val">Every viewer sees the same frame at the same moment, regardless of location or connection.</div></div>
+            <div class="arch-detail"><div class="arch-detail-label">ADVANTAGE</div><div class="arch-detail-val">Publisher infrastructure is not involved in maintaining synchronization. Zero coordination overhead.</div></div>
+          </div>
+        </div>
+        <div class="arch-panel" id="arch-schedule">
+          <div class="arch-panel-title">SCHEDULING</div>
+          <div class="arch-panel-sub">OPERATOR DEFINES · TIME DELIVERS</div>
+          <div class="arch-flow">
+            <div class="arch-node hi">OPERATOR PUBLISHES</div><div class="arch-arrow">→</div>
+            <div class="arch-node">SCHEDULE STORED</div><div class="arch-arrow">→</div>
+            <div class="arch-node hi">ALL CLIENTS NOTIFIED</div><div class="arch-arrow">→</div>
+            <div class="arch-node">TIME RESOLVES CONTENT</div>
+          </div>
+          <p class="arch-desc">The operator publishes a time-indexed schedule once. All connected clients receive it automatically. From that point, the schedule runs itself — the current time determines what plays, with no further operator action required. Schedules support linear broadcast, time-of-day programming blocks, looping queues, and on-demand libraries.</p>
+          <div class="arch-detail-grid">
+            <div class="arch-detail"><div class="arch-detail-label">PUBLISH COST</div><div class="arch-detail-val">One operation publishes to every viewer and every delivery node, regardless of audience size.</div></div>
+            <div class="arch-detail"><div class="arch-detail-label">FORMATS</div><div class="arch-detail-val">Linear broadcast · time-of-day blocks · looping queues · live premiere · on-demand.</div></div>
+            <div class="arch-detail"><div class="arch-detail-label">USER CHANNELS</div><div class="arch-detail-val">Each creator operates their own 24/7 schedule. The platform hosts unlimited independent channels.</div></div>
+          </div>
+        </div>
+        <div class="arch-panel" id="arch-access">
+          <div class="arch-panel-title">ACCESS CONTROL</div>
+          <div class="arch-panel-sub">ROTATING PATHS · TIERED ENTITLEMENT</div>
+          <div class="arch-flow">
+            <div class="arch-node">REQUEST</div><div class="arch-arrow">→</div>
+            <div class="arch-node sec">PATH VALIDATION</div><div class="arch-arrow">→</div>
+            <div class="arch-node sec">ENTITLEMENT CHECK</div><div class="arch-arrow">→</div>
+            <div class="arch-node sec">CONTENT VERIFICATION</div><div class="arch-arrow">→</div>
+            <div class="arch-node hi">SERVE</div>
+          </div>
+          <p class="arch-desc">Every request passes three independent validation layers before content is served. Access paths rotate on a configurable interval — there is no stable URL for blocking systems to target. Entitlement tokens control tier-based access at the delivery layer without origin round-trips. Four access tiers: anonymous, registered, subscription, and pay-per-view.</p>
+          <div class="arch-detail-grid">
+            <div class="arch-detail"><div class="arch-detail-label">ROTATING PATHS</div><div class="arch-detail-val">Access paths change on a configurable interval. No stable pattern for blocking or harvesting.</div></div>
+            <div class="arch-detail"><div class="arch-detail-label">ENTITLEMENT</div><div class="arch-detail-val">Signed access tokens validated at the delivery layer. No origin round-trip on each request.</div></div>
+            <div class="arch-detail"><div class="arch-detail-label">TIERS</div><div class="arch-detail-val">Anonymous · registered · subscription · pay-per-view. Creator-configurable per channel.</div></div>
+          </div>
+        </div>
+        <div class="arch-panel" id="arch-delivery">
+          <div class="arch-panel-title">DELIVERY</div>
+          <div class="arch-panel-sub">PUBLISHER-CONTROLLED · GLOBALLY DISTRIBUTED</div>
+          <div class="arch-flow">
+            <div class="arch-node hi">ORIGIN</div><div class="arch-arrow">→</div>
+            <div class="arch-node">REGIONAL EDGE</div><div class="arch-arrow">→</div>
+            <div class="arch-node hi">CACHED</div><div class="arch-arrow">→</div>
+            <div class="arch-node hi">SERVED LOCALLY</div>
+          </div>
+          <p class="arch-desc">Content is delivered from publisher-owned and operated regional infrastructure — no third-party CDN dependency. Regional delivery nodes cache content ahead of broadcast. Each regional node operates independently. A disrupted or blocked node has zero effect on any other region. The delivery architecture is designed for operation in adversarial network environments.</p>
+          <div class="arch-detail-grid">
+            <div class="arch-detail"><div class="arch-detail-label">INFRASTRUCTURE</div><div class="arch-detail-val">Publisher-owned regional nodes. No third-party CDN. Complete chain of custody.</div></div>
+            <div class="arch-detail"><div class="arch-detail-label">REGIONS</div><div class="arch-detail-val">SE Asia · East Asia · Europe · Americas · South Asia · Middle East.</div></div>
+            <div class="arch-detail"><div class="arch-detail-label">RESILIENCE</div><div class="arch-detail-val">Each node is independent. No inter-node dependency. Regional disruption is fully isolated.</div></div>
+          </div>
+        </div>
+        <div class="arch-panel" id="arch-protection">
+          <div class="arch-panel-title">CONTENT PROTECTION</div>
+          <div class="arch-panel-sub">VERIFIED AT EVERY STEP</div>
+          <div class="arch-flow">
+            <div class="arch-node hi">SIGNED AT ORIGIN</div><div class="arch-arrow">→</div>
+            <div class="arch-node">STORED SIGNED</div><div class="arch-arrow">→</div>
+            <div class="arch-node">DELIVERED SIGNED</div><div class="arch-arrow">→</div>
+            <div class="arch-node hi">VERIFIED AT CLIENT</div>
+          </div>
+          <p class="arch-desc">Every piece of content is cryptographically signed by the publisher at the point of ingest. The signature travels with the content through every stage of the delivery chain. At the client, two independent verification checks confirm that what was delivered matches exactly what the publisher signed. A compromised delivery node cannot inject or modify content without detection.</p>
+          <div class="arch-detail-grid">
+            <div class="arch-detail"><div class="arch-detail-label">SIGNING</div><div class="arch-detail-val">Publisher signs every content segment at ingest. Signature is inseparable from content.</div></div>
+            <div class="arch-detail"><div class="arch-detail-label">VERIFICATION</div><div class="arch-detail-val">Two independent client-side checks. Both must pass before content reaches the player.</div></div>
+            <div class="arch-detail"><div class="arch-detail-label">GUARANTEE</div><div class="arch-detail-val">No modified or unauthorized content can reach a viewer without detection.</div></div>
+          </div>
+        </div>
+        <div class="arch-panel" id="arch-override">
+          <div class="arch-panel-title">LIVE OVERRIDE</div>
+          <div class="arch-panel-sub">ONE ACTION · GLOBAL REACH · INSTANT</div>
+          <div class="arch-flow">
+            <div class="arch-node hi">OPERATOR ACTION</div><div class="arch-arrow">→</div>
+            <div class="arch-node">SINGLE PUBLISH</div><div class="arch-arrow">→</div>
+            <div class="arch-node hi">ALL DELIVERY NODES</div><div class="arch-arrow">→</div>
+            <div class="arch-node hi">ALL VIEWERS</div>
+          </div>
+          <p class="arch-desc">A live override requires a single operator action. That action propagates to every delivery node and every connected viewer simultaneously in under one second, regardless of how many viewers are currently watching. The cost of a global override is the same whether the audience is one hundred or one hundred million.</p>
+          <div class="arch-detail-grid">
+            <div class="arch-detail"><div class="arch-detail-label">COST</div><div class="arch-detail-val">One operator action. Constant cost regardless of audience size at time of override.</div></div>
+            <div class="arch-detail"><div class="arch-detail-label">PROPAGATION</div><div class="arch-detail-val">Sub-second global delivery. Delivery nodes pre-fetch new content before viewers request it.</div></div>
+            <div class="arch-detail"><div class="arch-detail-label">USE CASES</div><div class="arch-detail-val">Breaking news · emergency broadcast · live event · schedule correction · content removal.</div></div>
+          </div>
+        </div>
+        <div class="arch-panel" id="arch-scale">
+          <div class="arch-panel-title">SCALE</div>
+          <div class="arch-panel-sub">LOAD THAT DOES NOT GROW WITH AUDIENCE</div>
+          <div class="arch-flow">
+            <div class="arch-node">100 VIEWERS</div><div class="arch-arrow">→</div>
+            <div class="arch-node hi">SAME ORIGIN LOAD</div><div class="arch-arrow">←</div>
+            <div class="arch-node">100,000,000 VIEWERS</div>
+          </div>
+          <p class="arch-desc">Publisher-controlled infrastructure load during normal broadcast operation is structurally constant regardless of concurrent viewer count. This is not a CDN optimization — it is an architectural property of how synchronization is achieved. The load that scales with audience size is absorbed entirely by the delivery layer at near-zero marginal cost per viewer.</p>
+          <div class="arch-detail-grid">
+            <div class="arch-detail"><div class="arch-detail-label">ORIGIN LOAD</div><div class="arch-detail-val">Constant during broadcast. Load events occur only on schedule updates and content ingest.</div></div>
+            <div class="arch-detail"><div class="arch-detail-label">EDGE LOAD</div><div class="arch-detail-val">Scales with audience at the delivery layer. Marginal cost approaches zero after first cache population.</div></div>
+            <div class="arch-detail"><div class="arch-detail-label">COMPARISON</div><div class="arch-detail-val">Conventional streaming: origin load scales linearly. TVStation: origin load is independent of viewer count.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE DEMO -->
+<section id="demo" style="padding:60px 0;border-bottom:1px solid var(--border)">
+  <div class="section-wrap" style="padding-top:0;padding-bottom:0;border:none">
+    <div class="section-label">— LIVE SYSTEM DEMONSTRATION</div>
+    <div class="demo-wrap">
+      <div class="demo-header">
+        <div class="demo-title-mono">SYNCHRONIZED BLOCK SCHEDULE — RUNNING LIVE</div>
+        <div class="demo-status"><span class="utc-pulse"></span>COMPUTING FROM CURRENT UTC TIME</div>
+      </div>
+      <div class="demo-grid">
+        <div>
+          <div class="demo-col-label">24-HOUR PROGRAMMING SCHEDULE</div>
+          <div class="demo-block-grid" id="block-grid"></div>
+          <div class="demo-url-box">
+            <div class="demo-url-label">CURRENT ACCESS PATH — ROTATES EVERY HOUR</div>
+            <div class="demo-url-val" id="demo-url">computing...</div>
+          </div>
+        </div>
+        <div>
+          <div class="demo-col-label">REAL-TIME RESOLUTION ENGINE</div>
+          <div class="demo-compute">
+            <div class="demo-compute-row"><span class="demo-compute-key">CURRENT TIME (UTC)</span><span class="demo-compute-val green" id="dc-utc">--</span></div>
+            <div class="demo-compute-row"><span class="demo-compute-key">ACTIVE BLOCK</span><span class="demo-compute-val green" id="dc-block">--</span></div>
+            <div class="demo-compute-row"><span class="demo-compute-key">TIME INTO BLOCK</span><span class="demo-compute-val" id="dc-elapsed">--</span></div>
+            <div class="demo-compute-row"><span class="demo-compute-key">ACTIVE FILE</span><span class="demo-compute-val" id="dc-queue">--</span></div>
+            <div class="demo-compute-row"><span class="demo-compute-key">POSITION IN FILE</span><span class="demo-compute-val" id="dc-offset">--</span></div>
+            <div class="demo-compute-row"><span class="demo-compute-key">ACCESS PATH TOKEN</span><span class="demo-compute-val green" id="dc-token">--</span></div>
+            <div class="demo-compute-row"><span class="demo-compute-key">ESTIMATED VIEWERS SYNCED</span><span class="demo-compute-val green" id="dc-viewers">--</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div id="cta-title" style="font-family:var(--display);font-size:64px;letter-spacing:2px;margin-bottom:16px">READY TO<br><span style="color:var(--green)">LICENSE?</span></div>
+  <div class="cta-sub">PATENT PENDING · OUT OF IDEAS LLC · US UTILITY APPLICATION</div>
+  <a class="cta-btn" href="mailto:Demo@Outofideas.org?subject=TVStation Licensing Inquiry">REQUEST LICENSING INFORMATION</a>
+  <div class="contact-info">
+    Out of Ideas LLC · 1019 Van Buren St., Herndon, VA 20170<br>
+    Demo@Outofideas.org · 571-243-1839
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-mono">© 2025 OUT OF IDEAS LLC · ALL RIGHTS RESERVED · PATENT PENDING</div>
+  <div class="footer-mono">TVSTATION · SYNCHRONIZED BROADCAST INFRASTRUCTURE</div>
+</footer>
+
+<script>
+// UTC clock
+function tick(){
+  const n=new Date();
+  document.getElementById('utc-clock').textContent=
+    String(n.getUTCHours()).padStart(2,'0')+':'+
+    String(n.getUTCMinutes()).padStart(2,'0')+':'+
+    String(n.getUTCSeconds()).padStart(2,'0');
+}
+setInterval(tick,1000);tick();
+
+// Profile switcher
+function setProfile(p,el){
+  document.querySelectorAll('.profile-content').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.profile-tab').forEach(e=>e.classList.remove('active'));
+  document.getElementById('profile-'+p).classList.add('active');
+  el.classList.add('active');
+}
+
+// Architecture explorer
+function setArch(id,el){
+  document.querySelectorAll('.arch-panel').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.arch-nav-item').forEach(e=>e.classList.remove('active'));
+  document.getElementById('arch-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+// Block schedule demo
+const BLOCKS=[
+  {name:'LATE NIGHT',start:0,end:3,files:['ambient-vol1','space-drift'],dur:[1800,2400]},
+  {name:'SLEEP',start:3,end:7,files:['sleep-tones'],dur:[3600]},
+  {name:'WAKE',start:7,end:9,files:['morning-rise','gentle-start'],dur:[1200,900]},
+  {name:'MORNING',start:9,end:12,files:['news-block','culture-am','feature-01'],dur:[1800,2700,1200]},
+  {name:'NOON',start:12,end:14,files:['midday-mix','spotlight'],dur:[3600,1800]},
+  {name:'AFTERNOON',start:14,end:18,files:['documentary','short-film','culture-pm'],dur:[3600,2400,1800]},
+  {name:'EVENING',start:18,end:21,files:['prime-show','evening-news'],dur:[5400,1800]},
+  {name:'NIGHT',start:21,end:24,files:['late-show','night-culture','deep-cuts'],dur:[3600,2700,1800]}
+];
+
+function buildBlocks(){
+  const g=document.getElementById('block-grid');g.innerHTML='';
+  const h=new Date().getUTCHours();
+  BLOCKS.forEach(b=>{
+    const d=document.createElement('div');
+    d.className='demo-block'+(h>=b.start&&h<b.end?' active-block':'');
+    d.innerHTML='<div class="demo-block-name">'+b.name+'</div><div class="demo-block-time">'+
+      String(b.start).padStart(2,'0')+':00–'+String(b.end).padStart(2,'0')+':00</div>';
+    g.appendChild(d);
+  });
+}
+
+function simHash(s){
+  let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}
+  return Math.abs(h).toString(16).padStart(12,'0').substring(0,12);
+}
+
+function updateDemo(){
+  const n=new Date();
+  const h=n.getUTCHours(),m=n.getUTCMinutes(),s=n.getUTCSeconds();
+  const total=h*3600+m*60+s;
+  const block=BLOCKS.find(b=>h>=b.start&&h<b.end)||BLOCKS[0];
+  const elapsed=total-(block.start*3600);
+  const tdur=block.dur.reduce((a,b)=>a+b,0);
+  const pos=elapsed%tdur;
+  let acc=0,qi=0,off=0;
+  for(let i=0;i<block.dur.length;i++){if(pos<acc+block.dur[i]){qi=i;off=pos-acc;break;}acc+=block.dur[i];}
+  const interval=Math.floor(Date.now()/1000/3600);
+  const token=simHash('tvstation_'+interval);
+  const viewers=Math.floor(12400+Math.sin(Date.now()/28000)*4200+Math.random()*150);
+  document.getElementById('dc-utc').textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+' UTC';
+  document.getElementById('dc-block').textContent=block.name+' ('+block.start+':00 – '+block.end+':00)';
+  document.getElementById('dc-elapsed').textContent=elapsed+'s ('+Math.floor(elapsed/60)+'m '+elapsed%60+'s)';
+  document.getElementById('dc-queue').textContent='file '+(qi+1)+' of '+block.files.length+' — '+block.files[qi];
+  document.getElementById('dc-offset').textContent=off+'s into file';
+  document.getElementById('dc-token').textContent=token;
+  document.getElementById('demo-url').textContent='channel.tvstation.io/'+token+'/'+block.name.toLowerCase().replace(' ','-');
+  document.getElementById('dc-viewers').textContent=viewers.toLocaleString();
+  document.querySelectorAll('.demo-block').forEach((el,i)=>{el.classList.toggle('active-block',BLOCKS[i]===block);});
+}
+
+buildBlocks();updateDemo();setInterval(updateDemo,1000);
+
+// Language switcher
+const L={
+  en:{eyebrow:'PROPRIETARY BROADCAST TECHNOLOGY',title:'ZERO<br>LOAD.<br><span style="color:var(--green)">INFINITE</span><br>SCALE.',sub:'A broadcast delivery system where publisher infrastructure load does not increase with audience size. Every viewer receives the same content at the same moment — without server-side coordination, without scaling costs, without limits.',s1:'ADDED LOAD PER VIEWER',s2:'CONCURRENT VIEWERS',s3:'GLOBAL TIME SOURCE',sync:'ALL CONNECTED VIEWERS SYNCHRONIZED'},
+  es:{eyebrow:'TECNOLOGÍA DE DIFUSIÓN PROPIETARIA',title:'CERO<br>CARGA.<br><span style="color:var(--green)">ESCALA</span><br>INFINITA.',sub:'Un sistema de entrega donde la carga de infraestructura no aumenta con el tamaño de la audiencia.',s1:'CARGA ADICIONAL POR ESPECTADOR',s2:'ESPECTADORES SIMULTÁNEOS',s3:'FUENTE DE TIEMPO GLOBAL',sync:'TODOS LOS ESPECTADORES SINCRONIZADOS'},
+  zh:{eyebrow:'专有广播技术',title:'零<br>负载.<br><span style="color:var(--green)">无限</span><br>扩展.',sub:'一种广播传输系统，发布商基础设施负载不随受众规模增加。每位观众在同一时刻收到相同内容。',s1:'每位观众的额外负载',s2:'并发观看人数',s3:'全球时间源',sync:'所有连接的观众已同步'},
+  ja:{eyebrow:'独自の放送技術',title:'ゼロ<br>負荷.<br><span style="color:var(--green)">無限の</span><br>スケール.',sub:'視聴者数が増えても発行者のインフラ負荷が増加しない放送配信システム。',s1:'視聴者ごとの追加負荷',s2:'同時視聴者数',s3:'グローバル時刻ソース',sync:'すべての視聴者が同期されています'}
+};
+function setLang(l,el){
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  const d=L[l];
+  document.getElementById('h-eyebrow').textContent=d.eyebrow;
+  document.getElementById('h-title').innerHTML=d.title;
+  document.getElementById('h-sub').textContent=d.sub;
+  document.getElementById('h-s1').textContent=d.s1;
+  document.getElementById('h-s2').textContent=d.s2;
+  document.getElementById('h-s3').textContent=d.s3;
+  document.getElementById('h-sync').textContent=d.sync;
+}
+</script>
+</body>
+</html>
